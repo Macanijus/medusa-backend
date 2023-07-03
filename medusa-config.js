@@ -26,7 +26,7 @@ const ADMIN_CORS =
   process.env.ADMIN_CORS || "http://localhost:7000,http://localhost:7001";
 
 // CORS to avoid issues when consuming Medusa from a client
-const STORE_CORS = process.env.STORE_CORS || "http://localhost:8000";
+const STORE_CORS = process.env.STORE_CORS || "http://localhost:3000";
 
 const DATABASE_URL =
   process.env.DATABASE_URL || "postgres://localhost/medusa-store";
@@ -67,6 +67,13 @@ const modules = {
   },*/
 };
 
+const adminPlugin = {
+  resolve: "@medusajs/admin",
+  options: {
+    autoRebuild: true,
+  },
+};
+
 /** @type {import('@medusajs/medusa').ConfigModule["projectConfig"]} */
 const projectConfig = {
   jwtSecret: process.env.JWT_SECRET,
@@ -81,6 +88,15 @@ const projectConfig = {
 /** @type {import('@medusajs/medusa').ConfigModule} */
 module.exports = {
   projectConfig,
-  plugins,
+  plugins: [
+    ...plugins,
+    {
+      resolve: "@medusajs/admin",
+      options: {
+        autoRebuild: true,
+        // Add any additional options or configurations for the admin plugin here
+      },
+    },
+  ],
   modules,
 };
